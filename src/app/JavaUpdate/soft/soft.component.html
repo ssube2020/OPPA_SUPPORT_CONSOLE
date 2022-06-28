@@ -1,0 +1,98 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+<div class="container" style="max-width: 100% !important; margin-left: 0px !important;">
+
+    <form [formGroup]="softUpdateForm" style="margin-left: 250px;" class="content-update-form" id="content-form">
+        <!-- <mat-form-field appearance="fill" style="margin-left: 220px;"> -->
+            <div class="inner-content" style="display: flex;">
+                <div class="form-group">
+                    <label class="labels"  for="JavaContentUpdateDTO_NewContent">New Soft</label>
+                    <input required formControlName="newSoft" class="form-control" data-val="true" data-val-required="The New Content field is required." id="JavaContentUpdateDTO_NewContent" name="JavaContentUpdateDTO.NewContent" placeholder="Enter new content" type="text" value="">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="JavaContentUpdateDTO.NewContent" data-valmsg-replace="true"></span>
+                </div>
+        
+                <div class="form-group" style="display: grid !important;">
+                    <label class="labels" for="JavaContentUpdateDTO_ContentName">Content Name</label>
+                    <select formControlName="contentName" class="pt-0" name="JavaContentUpdateDTO.ContentName" id="content-selector" style="border-radius: 5px; border-style: double; height: 30px !important;">
+                                <option *ngFor="let itm of vmObj.contentNames" value={{itm}}> 
+                                    {{ itm }}
+                                </option>
+                                <!-- <option value="usa2georgia"> usa2georgia </option>
+                                <option value="crystal"> crystal </option>
+                                <option value="gsn"> gsn </option>
+                                <option value="eqe"> eqe </option>
+                                <option value="credo"> credo </option>
+                                <option value="beeline"> beeline </option>
+                                <option value="nova" selected=""> nova </option>
+                                <option value="leadercredit"> leadercredit </option>
+                                <option value="orinabiji"> orinabiji </option> -->
+
+                    </select>
+                    
+                </div>
+        
+        
+                <div class="form-group">
+                    <label class="labels" for="JavaContentUpdateDTO_OldContent">Current Content</label>
+                    <input formControlName="oldContent" class="form-control" data-val="true" data-val-required="The Current Content field is required." id="JavaContentUpdateDTO_OldContent" placeholder="Enter current content" type="text" value="">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="JavaContentUpdateDTO.OldContent" data-valmsg-replace="true"></span>
+                </div>
+        
+                <div class="form-group">
+                    <label class="labels" for="JavaContentUpdateDTO_OldSoft">Current Soft</label>
+                    <input formControlName="oldSoft" class="form-control" data-val="true" data-val-required="The Current Soft field is required." id="JavaContentUpdateDTO_OldSoft" name="JavaContentUpdateDTO.OldSoft" placeholder="Enter current soft" type="text" value="">
+                     <span class="text-danger field-validation-valid" data-valmsg-for="JavaContentUpdateDTO.OldSoft" data-valmsg-replace="true"></span>
+                </div>
+        
+                <div class="form-group">
+                    <label class="labels" for="JavaContentUpdateDTO_TerminalName">Name</label>
+                    <input formControlName="contentName" formControlName="terminalName" class="form-control" id="JavaContentUpdateDTO_TerminalName" name="JavaContentUpdateDTO.TerminalName" placeholder="Enter Terminalname" type="text" value="">
+                </div>
+                <div class="form-group">
+                    <button style="margin-top: 21px;" class="btn btn-success update-btn" (click)="updateJavaSoft()"> Update </button>
+                </div>
+            </div>
+    
+            
+        <!-- </mat-form-field> -->
+    </form>
+    
+    <div style="overflow-x:scroll;">
+        <table class="content-table table table-bordered table-hover" style="margin-left: 250px; margin-bottom: 120px; width: 85%; margin-top: 10px;">
+            <thead style="background-color: #a9a9a9;">
+                <tr>
+                    <th scope="col"> New <br> Soft </th>
+                    <th scope="col"> Content </th>
+                    <th scope="col"> Old Soft </th>
+                    <th scope="col"> Create <br> User </th>
+                    <th scope="col"> Create <br> Date </th>
+                    <th scope="col"> Finish <br> Date </th>
+                    <th scope="col"> Last <br> Update </th>
+                    <th scope="col"> Status </th>
+                    <th scope="col"> Expire <br> Date </th>
+                    <th scope="col"> Name </th>
+                </tr>
+            </thead> 
+        
+            <tbody>
+                <tr *ngFor="let item of vmObj.javaSoftUpdateProcessingDTOs">
+                    <td>  {{ item.newSoftVersion }}  </td>      
+                    <td>  {{ item.contentVersion }}  </td>      
+                    <td>  {{ item.oldSoftVersion }}  </td>      
+                    <td>  {{ item.createUser }}  </td>      
+                    <td>  {{ item.createDate }}  </td>      
+                    <td>  {{ item.finishDate }}  </td>      
+                    <td>  {{ item.lastUpdate }}  </td>      
+                    <td>  {{ item.status }}  </td>      
+                    <td>  {{ item.expireDate }}  </td>      
+                    <td>  {{ item.terminalName }}  </td>         
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

@@ -1,0 +1,27 @@
+
+
+  <h1 mat-dialog-title> Add </h1>
+  <div mat-dialog-content>
+    <div class="d-flex modal-contnt">
+      <div class="profile-content d-grid" >
+        <label class="label"> Profile Id </label>
+        <select name="profile" id="profile_id" class="selector" (change)="selectOption($event)">
+          <option *ngFor="let item of profIdsList" value="{{item.id}}"> {{item.id}} - {{item.name}} </option>  
+        </select>
+      </div>
+      <div class="product-content d-grid ms-4">
+        <label class="label"> Product Id </label>
+        <select name="product" id="product_id" class="selector" (change)="selectOption($event)">
+          <option *ngFor="let item of prodIdsList" value="{{item.id}}"> {{item.id}} - {{item.name}} </option>  
+        </select>
+      </div>
+    </div>
+    
+  </div>
+  <div mat-dialog-actions class="mt-4">
+    <button mat-button mat-dialog-close class="btn btn-success" (click)="addProduct()">Add</button> 
+    <button mat-button mat-dialog-close class="btn btn-danger ms-2">Close</button>
+    <!-- <button mat-button mat-dialog-close> {{ ragaca }} </button> -->
+  </div>
+
+

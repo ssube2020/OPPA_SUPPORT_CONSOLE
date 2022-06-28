@@ -1,0 +1,131 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<div class="container">
+
+
+    <!-- <form  class="content-update-form" id="content-form">
+            <div class="inner-content" style="display: flex;">
+                <div class="form-group">
+                    <label class="labels"  for="JavaContentUpdateDTO_NewContent"> Profile </label>
+                    <input formControlName="currentContent" class="form-control" data-val="true" data-val-required="The New Content field is required." id="JavaContentUpdateDTO_NewContent" name="JavaContentUpdateDTO.NewContent" placeholder="Enter new content" type="text" value="">
+                  
+                </div>
+        
+                <div class="form-group" style="display: grid !important; margin-left: 20px;">
+                    <label class="labels" for="JavaContentUpdateDTO_ContentName"> Product </label>
+                    <input formControlName="currentContent" class="form-control" data-val="true" data-val-required="The New Content field is required." id="JavaContentUpdateDTO_NewContent" name="JavaContentUpdateDTO.NewContent" placeholder="Enter new content" type="text" value="">
+                </div>
+        
+                <div class="form-group" style="margin-left: 20px;">
+                    <button style="margin-top: 21px;" class="btn btn-success update-btn" > Search </button>
+                </div>
+            </div>
+    
+            
+    </form> -->
+
+    <form class="d-flex search-form" [formGroup]="searchForm">
+        <div class="form-group" style="margin-left: 0px !important;">
+            <label class="form-label"> Profile Id </label>
+            <input formControlName="profileId" type="text" name="Profile" class="form-control">
+        </div>
+
+        <div class="form-group ms-4">
+            <label class="form-label"> Product Id</label>
+            <input formControlName="productId" type="text" name="Product" class="form-control">
+        </div>
+
+        <div class="form-group ms-4">
+            <button type="submit" class="btn btn-success update-btn" (click)="profileSearch()"> Search </button>
+        </div>
+    </form>
+
+    <div class="mat-elevation-z8">
+        <table class="table table-bordered table-hover" mat-table [dataSource]="dataSource">
+    
+            <ng-container matColumnDef="checkbox">
+                <th mat-header-cell *matHeaderCellDef style="width: 45px;"> <input [checked]="checkAll" type="checkbox" class="header-check-box" (click)="checkUncheckAll()"> </th>
+                <td mat-cell *matCellDef="let element" > <input value=" {{element.id}}" type="checkbox" [checked]="checkSingle" class="check-box" (click)="checkUncheckSingle($event)"> </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="profile">
+                <th mat-header-cell *matHeaderCellDef> Profile </th>
+                <td mat-cell *matCellDef="let element"> {{element.profileName}} </td>
+            </ng-container>
+    
+            <!-- Name Column -->
+            <ng-container matColumnDef="profileId">
+                <th mat-header-cell *matHeaderCellDef> Profile Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.profileId }} </td>
+            </ng-container>
+    
+            <!-- Weight Column -->
+            <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef> Product </th>
+                <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+            </ng-container>
+    
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="productId">
+                <th mat-header-cell *matHeaderCellDef> Product Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.productId}} </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
+        </table>
+    
+        <mat-paginator 
+        [pageSizeOptions]="[10, 20, 50]" 
+        showFirstLastButtons aria-label="Select page of periodic elements"
+        [length]="totalItems"
+        (page)=fetch()
+        >
+        </mat-paginator>
+    </div>
+
+    <div class="form-group ml-0 d-flex">
+        <div class="mt-4 d-flex">
+            <div>
+                <button id="delete-btn" type="button" class="btn btn-danger lower-btns" data-toggle="modal" data-target="#DeleteCustom" (click)="openDialog($event)"> Delete </button>
+                <button *ngIf="enableDeleteAllButton" type="button" class="btn btn-warning lower-btns ms-2" data-toggle="modal" (click)="openDeleteAllDialog()" > Delete All </button>
+                <button id="add-btn" type="button" class="btn btn-success lower-btns ms-2" data-toggle="modal" mat-button (click)="openDialog($event)"> Add </button>
+            </div>
+            <div class="ml-1">
+                <form>
+                    <input type="hidden" name="Profile">
+                    <input type="hidden" name="Product">
+                    <!-- <button type="submit" class="btn btn-primary lower-btns ms-2"> Exprot To Excel </button> -->
+                    <a type="submit" class="btn btn-primary lower-btns ms-2" href="{{hostUrl}}/Profile/GenerateExcel?profile={{searchForm.value.profileId}}&product={{searchForm.value.productId}}&offset={{proFilterDto.offset}}&perPage={{proFilterDto.perPage}}"> Exprot To Excel </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div id="enable-flash" class="alert alert-success mt-4" role="alert"
+        style="background-color: #78c1a0 !important; font-size: larger; color: #000000b8; font-weight: bold; height: 45px; padding-top: 10px;">
+        deleted successfully
+    </div>
+    
+    <div id="enable-flash" class="alert alert-danger mt-4" role="alert"
+        style="font-size: larger; color: #f44336; background-color: #eba3aa; font-weight: bold; height: 45px; padding-top: 10px;">
+        
+    </div>
+    
+    <div id="enable-flash" class="alert alert-danger mt-4" role="alert"
+        style="font-size: larger; color: #f44336; background-color: #eba3aa; font-weight: bold; height: 45px; padding-top: 10px;">
+        choose profile to delete!
+    </div>
+    
+    <div id="disable-flash" class="alert alert-warning mt-4" role="alert"
+        style="background-color: #cddc39e8;; font-size: larger; color: #ff5722db; font-weight: bold; height: 45px; padding-top: 10px;">
+        profile added successfully
+    </div> -->
+
+    <!-- <button >Call Component One Method</button> -->
+    <app-profile-dialog class="d-none"> </app-profile-dialog>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

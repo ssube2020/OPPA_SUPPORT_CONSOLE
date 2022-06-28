@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.lowker-btns {
+    font-family: 'Roboto' !important;
+    padding-top: 8px;
+}
+
+.check-box {
+    margin-left: -10px !important;
+    margin-top: 5px !important;
+}
+
+.header-check-box {
+    margin-left: -9.5px;
+}

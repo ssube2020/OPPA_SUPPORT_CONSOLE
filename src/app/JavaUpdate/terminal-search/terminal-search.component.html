@@ -1,0 +1,141 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<div class="container">
+
+    <form [formGroup]="terminalSearchForm" class="content-update-form" id="content-form">
+        <!-- <mat-form-field appearance="fill" style="margin-left: 220px;"> -->
+            <div class="inner-content" style="display: flex;">
+                <div class="form-group">
+                    <label class="labels"  for="JavaContentUpdateDTO_NewContent"> Current Content </label>
+                    <input formControlName="currentContent" class="form-control" data-val="true" data-val-required="The New Content field is required." id="JavaContentUpdateDTO_NewContent" name="JavaContentUpdateDTO.NewContent" placeholder="Enter new content" type="text" value="">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="JavaContentUpdateDTO.NewContent" data-valmsg-replace="true"></span>
+                </div>
+        
+                <div class="form-group" style="display: grid !important;">
+                    <label class="labels" for="JavaContentUpdateDTO_ContentName">Content Name</label>
+                    <select formControlName="contentName" class="pt-0" name="JavaContentUpdateDTO.ContentName" id="content-selector" style="border-radius: 5px; border-style: double; height: 30px !important;">
+                                <option *ngFor="let itm of contentNames" value={{itm}}> 
+                                    {{ itm }}
+                                </option>
+
+                    </select>
+                </div>
+        
+        
+                <div class="form-group">
+                    <label class="labels" for="JavaContentUpdateDTO_OldContent"> Current Soft </label>
+                    <input formControlName="currentSoft" class="form-control" data-val="true" data-val-required="The Current Content field is required." id="JavaContentUpdateDTO_OldContent" placeholder="Enter current content" type="text" value="">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="JavaContentUpdateDTO.OldContent" data-valmsg-replace="true"></span>
+                </div>
+        
+                <div class="form-group">
+                    <label class="labels" for="JavaContentUpdateDTO_OldSoft"> Name </label>
+                    <input formControlName="terminalName" class="form-control" data-val="true" data-val-required="The Current Soft field is required." id="JavaContentUpdateDTO_OldSoft" name="JavaContentUpdateDTO.OldSoft" placeholder="Enter current soft" type="text" value="">
+                     <span class="text-danger field-validation-valid" data-valmsg-for="JavaContentUpdateDTO.OldSoft" data-valmsg-replace="true"></span>
+                </div>
+        
+                <div class="form-group">
+                    <button style="margin-top: 21px;" class="btn btn-success update-btn" (click)="terminalSearch()"> Search </button>
+                </div>
+            </div>
+    
+            
+        <!-- </mat-form-field> -->
+    </form>
+
+    <table mat-table [dataSource]="dataSource" class="table table-bordered table-hover">
+        
+        <ng-container matColumnDef="checkBox">
+            <th mat-header-cell *matHeaderCellDef style="width: 45px;"> <input type="checkbox" [checked]="checkAll" class="header-check-box" (click)="checkUncheck()"> </th>
+            <td mat-cell *matCellDef="let element" > <input type="checkbox" [checked]="checkSingle" *ngIf="element.updateenabled==1 || element.updateenabled=='0'" class="check-box" (click)="addToterminalList(element.terminalName,checkSingle)"> </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="updateenabled">
+            <th mat-header-cell *matHeaderCellDef> Enabled </th>
+            <td mat-cell *matCellDef="let element"> {{element.updateenabled}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="reqDate">
+            <th mat-header-cell *matHeaderCellDef> Request Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.reqDate}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="terminalName">
+            <th mat-header-cell *matHeaderCellDef> Terminal Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.terminalName}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="softVersion">
+            <th mat-header-cell *matHeaderCellDef> Soft Version </th>
+            <td mat-cell *matCellDef="let element"> {{element.softVersion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="contentVersion">
+            <th mat-header-cell *matHeaderCellDef> Content Version </th>
+            <td mat-cell *matCellDef="let element"> {{element.contentVersion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cashLastDate">
+            <th mat-header-cell *matHeaderCellDef> Cash Last Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.cashLastDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="coinLastDate">
+            <th mat-header-cell *matHeaderCellDef> Coin Last Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.coinLastDate}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"> </tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"> </tr>
+    </table>
+
+    <mat-paginator #paginator="matPaginator"
+    [length]="lstLength"
+    [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements"
+    (page)="petch()">
+    </mat-paginator>
+
+    <div class="d-flex mt-4">
+        <div class="d-flex">
+            <div class="ml-1 d-flex">
+                <div>
+                    <button id="EnableUpdate" type="submit" class="btn btn-success lower-btns" (click)="changeUpdate(enableType)"> Enable Update </button>
+                </div>
+
+                <div style="margin-left: 10px;">
+                    <button id="DisableUpdate" type="submit" class="btn btn-secondary lower-btns" (click)="changeUpdate(disableType)"> Disable Update </button>
+                </div>
+
+                <div style="margin-left: 10px;"> 
+                    <input type="hidden" name="CurrentContent">
+                    <input type="hidden" name="CurrentSoft">
+                    <input type="hidden" name="TerminalName">
+                    <input type="hidden" name="ContentName">
+                    <a type="submit" class="btn btn-primary lower-btns" href="{{hostUrl}}/JavaUpdate/GenerateExcel?currentContent={{terminalSearchForm.value.currentContent}}&currentSoft={{terminalSearchForm.value.currentSoft}}&currentSoft={{terminalSearchForm.value.currentSoft}}&terminalName={{terminalSearchForm.value.terminalName}}&contentName={{terminalSearchForm.value.contentName}}&offset={{terminalSearchForm.value.offset}}&perPage={{terminalSearchForm.value.perPage}}"> Exprot To Excel </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="enableUpdateFlashMessage" id="enable-flash" class="alert alert-success mt-4" role="alert" style="background-color: #78c1a0 !important; font-size: larger; color: #000000b8; font-weight: bold; height: 45px; padding-top: 10px;">
+        update enabled successfully
+    </div>
+
+    <div *ngIf="couldnotUpdate" id="enable-flash" class="alert alert-danger mt-4" role="alert" style="font-size: larger; color: #f44336; background-color: #eba3aa; font-weight: bold; height: 45px; padding-top: 10px;">
+        could not update, try again!
+    </div>
+
+    <div *ngIf="unknownError" id="enable-flash" class="alert alert-danger mt-4" role="alert" style="font-size: larger; color: #f44336; background-color: #eba3aa; font-weight: bold; height: 45px; padding-top: 10px;">
+        choose terminal to update!
+    </div>
+
+    <div *ngIf="disableUpdateFlashMessage" id="disable-flash" class="alert alert-warning mt-4" role="alert" style="background-color: #cddc39e8;; font-size: larger; color: #ff5722db; font-weight: bold; height: 45px; padding-top: 10px;">
+        update disabled successfully
+      </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
